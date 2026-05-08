@@ -82,10 +82,19 @@ export default function CartDrawer() {
                       className="flex gap-4 p-5 bg-white rounded-2xl border border-stone-100 shadow-sm"
                     >
                       <div
-                        className="w-12 h-12 rounded-xl shrink-0 flex items-center justify-center text-white font-serif italic text-sm"
-                        style={{ background: item.themeColor }}
+                        className="w-12 h-12 rounded-xl shrink-0 flex items-center justify-center overflow-hidden"
+                        style={{ background: item.themeColor + '18' }}
                       >
-                        {item.name.split(' ')[1]?.[0] || item.name[0]}
+                        {item.image ? (
+                          <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1.5" />
+                        ) : (
+                          <span
+                            className="font-serif italic text-sm"
+                            style={{ color: item.themeColor }}
+                          >
+                            {item.name.split(' ')[1]?.[0] || item.name[0]}
+                          </span>
+                        )}
                       </div>
 
                       <div className="flex-1 min-w-0">

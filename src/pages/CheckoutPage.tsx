@@ -57,17 +57,17 @@ export default function CheckoutPage() {
     label: string; field: string; type?: string; placeholder?: string; value: string;
   }) => (
     <div>
-      <label className="block font-mono text-[9px] uppercase tracking-[0.35em] text-stone-400 mb-2">{label}</label>
+      <label className="block font-mono text-[10px] uppercase tracking-[0.3em] text-stone-600 mb-2">{label}</label>
       <input
         type={type}
         value={value}
         onChange={e => update(field, e.target.value)}
         placeholder={placeholder}
-        className={`w-full bg-transparent border-b-2 py-3 text-stone-900 font-sans text-[14px] placeholder:text-stone-300 focus:outline-none transition-colors ${
-          errors[field] ? 'border-red-400 focus:border-red-500' : 'border-stone-200 focus:border-brand-forest'
+        className={`w-full bg-transparent border-b-2 py-3 text-stone-900 font-sans text-[14px] placeholder:text-stone-400 focus:outline-none transition-colors ${
+          errors[field] ? 'border-red-400 focus:border-red-500' : 'border-stone-300 focus:border-brand-forest'
         }`}
       />
-      {errors[field] && <p className="font-mono text-[9px] text-red-500 mt-1.5">{errors[field]}</p>}
+      {errors[field] && <p className="font-mono text-[10px] text-red-500 mt-1.5">{errors[field]}</p>}
     </div>
   );
 
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
                 }`}>
                   {i < 2 ? <Check className="w-2.5 h-2.5" /> : <span>{i + 1}</span>}
                 </div>
-                <span className={`font-mono text-[9px] uppercase tracking-[0.2em] ${i <= 2 ? 'text-stone-700' : 'text-stone-300'}`}>
+                <span className={`font-mono text-[10px] uppercase tracking-[0.2em] ${i <= 2 ? 'text-stone-800' : 'text-stone-400'}`}>
                   {step}
                 </span>
                 {i < 3 && <ChevronRight className="w-3 h-3 text-stone-300" />}
@@ -162,8 +162,8 @@ export default function CheckoutPage() {
                 <div className="grid grid-cols-2 gap-6">
                   <Field label="Pincode" field="pincode" value={form.pincode} placeholder="600001" />
                   <div>
-                    <label className="block font-mono text-[9px] uppercase tracking-[0.35em] text-stone-400 mb-2">Country</label>
-                    <div className="border-b-2 border-stone-200 py-3 font-sans text-[14px] text-stone-400">India</div>
+                    <label className="block font-mono text-[10px] uppercase tracking-[0.3em] text-stone-600 mb-2">Country</label>
+                    <div className="border-b-2 border-stone-300 py-3 font-sans text-[14px] text-stone-700">India</div>
                   </div>
                 </div>
               </div>
@@ -176,7 +176,7 @@ export default function CheckoutPage() {
                   <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-brand-forest mb-1">
                     Standard Delivery · <span className="num">₹{DELIVERY_FEE}</span>
                   </p>
-                  <p className="text-[12px] text-stone-400 leading-relaxed font-light">
+                  <p className="text-[13px] text-stone-600 leading-relaxed font-light">
                     3–5 business days. Crush-proof packaging. Pan-India shipping. Free on orders above ₹499.
                   </p>
                 </div>
@@ -216,7 +216,7 @@ export default function CheckoutPage() {
                   <Field label="UPI ID" field="upiId" value={form.upiId} placeholder="yourname@upi" />
                   <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-stone-100">
                     <Shield className="w-4 h-4 text-brand-sage shrink-0" />
-                    <p className="text-[12px] text-stone-400 font-light">Payments encrypted via 256-bit SSL. We never store your UPI ID.</p>
+                    <p className="text-[12px] text-stone-600 font-light">Payments encrypted via 256-bit SSL. We never store your UPI ID.</p>
                   </div>
                 </motion.div>
               )}
@@ -231,7 +231,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-stone-100">
                     <Shield className="w-4 h-4 text-brand-sage shrink-0" />
-                    <p className="text-[12px] text-stone-400 font-light">256-bit SSL encryption. Card details are never stored on our servers.</p>
+                    <p className="text-[12px] text-stone-600 font-light">256-bit SSL encryption. Card details are never stored on our servers.</p>
                   </div>
                 </motion.div>
               )}
@@ -239,11 +239,11 @@ export default function CheckoutPage() {
               {paymentMethod === 'cod' && (
                 <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 bg-white rounded-2xl border border-stone-100">
                   <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-brand-forest mb-2">Cash on Delivery</p>
-                  <p className="text-[13px] text-stone-500 leading-relaxed font-light mb-4">
+                  <p className="text-[13px] text-stone-600 leading-relaxed font-light mb-4">
                     Pay in cash when your order arrives. Please keep exact change ready. Available on orders up to ₹2,000.
                   </p>
-                  <div className="px-4 py-3 bg-brand-gold/8 border border-brand-gold/20 rounded-xl">
-                    <p className="font-mono text-[10px] text-stone-600 tracking-wider">Additional ₹20 COD handling charge.</p>
+                  <div className="px-4 py-3 bg-brand-gold/10 border border-brand-gold/30 rounded-xl">
+                    <p className="font-mono text-[10px] text-stone-700 tracking-wider">Additional ₹20 COD handling charge.</p>
                   </div>
                 </motion.div>
               )}
@@ -260,8 +260,8 @@ export default function CheckoutPage() {
                 className="bg-white rounded-3xl border border-stone-200/60 overflow-hidden shadow-xl shadow-stone-200/60"
               >
                 <div className="px-7 py-6 border-b border-stone-100 bg-brand-forest">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/60 mb-1">Order Summary</p>
-                  <p className="font-mono text-[9px] text-brand-gold/70 tracking-wider">
+                  <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-white mb-1">Order Summary</p>
+                  <p className="font-mono text-[10px] text-brand-gold tracking-wider">
                     <span className="num">{items.length}</span> item{items.length !== 1 ? 's' : ''}
                   </p>
                 </div>
@@ -270,14 +270,20 @@ export default function CheckoutPage() {
                   {items.map(item => (
                     <div key={item.id} className="flex items-center gap-3">
                       <div
-                        className="w-10 h-10 rounded-xl shrink-0 flex items-center justify-center text-white font-serif italic text-sm"
-                        style={{ background: item.themeColor }}
+                        className="w-12 h-12 rounded-xl shrink-0 flex items-center justify-center overflow-hidden"
+                        style={{ background: item.themeColor + '18' }}
                       >
-                        {item.name.split(' ')[1]?.[0] || item.name[0]}
+                        {item.image ? (
+                          <img src={item.image} alt={item.name} className="w-full h-full object-contain p-1" />
+                        ) : (
+                          <span className="font-serif italic text-sm" style={{ color: item.themeColor }}>
+                            {item.name.split(' ')[1]?.[0] || item.name[0]}
+                          </span>
+                        )}
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="font-sans text-[13px] font-600 text-stone-900 truncate">{item.name}</p>
-                        <p className="font-mono text-[9px] text-stone-400">Qty: <span className="num">{item.quantity}</span></p>
+                        <p className="font-mono text-[10px] text-stone-500">Qty: <span className="num">{item.quantity}</span></p>
                       </div>
                       <span className="num text-[15px] font-medium text-brand-forest shrink-0">₹{item.priceNum * item.quantity}</span>
                     </div>
@@ -286,21 +292,21 @@ export default function CheckoutPage() {
 
                 <div className="px-7 py-5 border-t border-stone-100 space-y-3">
                   <div className="flex justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-400">Subtotal</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-600">Subtotal</span>
                     <span className="num text-[14px] font-medium text-stone-900">₹{total}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-400">Delivery</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-600">Delivery</span>
                     <span className="num text-[14px] font-medium text-stone-900">₹{DELIVERY_FEE}</span>
                   </div>
                   {paymentMethod === 'cod' && (
                     <div className="flex justify-between">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-400">COD Charges</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-stone-600">COD Charges</span>
                       <span className="num text-[14px] font-medium text-stone-900">₹20</span>
                     </div>
                   )}
                   <div className="pt-3 border-t border-stone-100 flex justify-between items-end">
-                    <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-stone-900 font-medium">Total</span>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-stone-900 font-bold">Total</span>
                     <span className="num text-[34px] font-medium text-brand-forest leading-none">₹{grandTotal}</span>
                   </div>
                 </div>
