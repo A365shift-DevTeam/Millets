@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Shield, Truck, ChevronRight, CreditCard, Smartphone, Banknote, Check, Leaf, AlertCircle, X } from 'lucide-react';
+
 import { useCart } from '../context/CartContext';
 import { supabase } from '../lib/supabase';
 
@@ -62,7 +63,6 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({
     firstName: '', email: '', phone: '',
     address: '', city: '', state: '', pincode: '',
-    upiId: '', cardNumber: '', cardName: '', cardExpiry: '', cardCvv: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isPlacing, setIsPlacing] = useState(false);
@@ -84,14 +84,6 @@ export default function CheckoutPage() {
     if (!form.city.trim())                               e.city       = 'City is required';
     if (!form.state.trim())                              e.state      = 'State is required';
     if (!form.pincode.match(/^\d{6}$/))                  e.pincode    = 'Enter a valid 6-digit pincode';
-    if (paymentMethod === 'upi' && !form.upiId.includes('@'))
-                                                         e.upiId      = 'Enter a valid UPI ID (e.g. name@upi)';
-    if (paymentMethod === 'card') {
-      if (!form.cardNumber.replace(/\s/g, '').match(/^\d{16}$/)) e.cardNumber = 'Enter a valid 16-digit card number';
-      if (!form.cardName.trim())                                  e.cardName   = 'Name on card is required';
-      if (!form.cardExpiry.match(/^\d{2}\/\d{2}$/))              e.cardExpiry = 'Use MM/YY format';
-      if (!form.cardCvv.match(/^\d{3,4}$/))                      e.cardCvv    = 'Enter 3 or 4 digit CVV';
-    }
     return e;
   };
 
@@ -106,7 +98,6 @@ export default function CheckoutPage() {
     setIsPlacing(true);
 
     const orderNumber = `MF-${Math.floor(100000 + Math.random() * 900000)}`;
-    const paymentNote = paymentMethod === 'upi' ? form.upiId : null;
 
     const { error } = await supabase.from('orders').insert({
       order_number: orderNumber,
@@ -123,7 +114,7 @@ export default function CheckoutPage() {
       delivery_fee: DELIVERY_FEE,
       grand_total: grandTotal,
       payment_method: paymentMethod,
-      payment_note: paymentNote,
+      payment_note: null,
       is_new: true,
     });
 
@@ -277,42 +268,14 @@ export default function CheckoutPage() {
                 ))}
               </div>
 
-              {paymentMethod === 'upi' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-                  <Field label="UPI ID" field="upiId" value={form.upiId} placeholder="yourname@upi" errors={errors} onUpdate={update} />
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-stone-100">
-                    <Shield className="w-4 h-4 text-brand-sage shrink-0" />
-                    <p className="text-[12px] text-stone-600 font-light">Your UPI ID is saved so our team can send you a payment request.</p>
-                  </div>
-                </motion.div>
-              )}
-
-              {paymentMethod === 'card' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                  <Field label="Card Number" field="cardNumber" value={form.cardNumber} placeholder="1234 5678 9012 3456" errors={errors} onUpdate={update} />
-                  <Field label="Name on Card" field="cardName" value={form.cardName} placeholder="ARJUN SHARMA" errors={errors} onUpdate={update} />
-                  <div className="grid grid-cols-2 gap-6">
-                    <Field label="Expiry (MM/YY)" field="cardExpiry" value={form.cardExpiry} placeholder="12/27" errors={errors} onUpdate={update} />
-                    <Field label="CVV" field="cardCvv" value={form.cardCvv} type="password" placeholder="•••" errors={errors} onUpdate={update} />
-                  </div>
-                  <div className="flex items-center gap-3 p-4 bg-white rounded-xl border border-stone-100">
-                    <Shield className="w-4 h-4 text-brand-sage shrink-0" />
-                    <p className="text-[12px] text-stone-600 font-light">256-bit SSL encryption. Card details are never stored on our servers.</p>
-                  </div>
-                </motion.div>
-              )}
-
-              {paymentMethod === 'cod' && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-6 bg-white rounded-2xl border border-stone-100">
-                  <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-brand-forest mb-2">Cash on Delivery</p>
-                  <p className="text-[13px] text-stone-600 leading-relaxed font-light mb-4">
-                    Pay in cash when your order arrives. Please keep exact change ready. Available on orders up to ₹2,000.
-                  </p>
-                  <div className="px-4 py-3 bg-brand-gold/10 border border-brand-gold/30 rounded-xl">
-                    <p className="font-mono text-[10px] text-stone-700 tracking-wider">Additional ₹20 COD handling charge.</p>
-                  </div>
-                </motion.div>
-              )}
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} key={paymentMethod} className="p-5 bg-white rounded-2xl border border-stone-100 flex items-start gap-3">
+                <Shield className="w-4 h-4 text-brand-sage shrink-0 mt-0.5" />
+                <p className="text-[13px] text-stone-600 font-light leading-relaxed">
+                  {paymentMethod === 'upi' && 'Our team will send you a UPI payment request to your registered mobile number after confirming your order.'}
+                  {paymentMethod === 'card' && 'Our team will share a secure payment link to your email after confirming your order.'}
+                  {paymentMethod === 'cod' && 'Pay in cash when your order arrives. Please keep exact change ready. An additional ₹20 COD handling charge applies.'}
+                </p>
+              </motion.div>
             </motion.section>
           </div>
 
