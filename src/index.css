@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Syne", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "DM Mono", ui-monospace, monospace;
+
+  --color-brand-forest:    #0F2218;
+  --color-brand-moss:      #1E3D2A;
+  --color-brand-sage:      #2D6B42;
+  --color-brand-gold:      #C4922A;
+  --color-brand-amber:     #E8A92A;
+  --color-brand-cream:     #F5F0E6;
+  --color-brand-parchment: #FAF7F2;
+  --color-brand-terracotta:#B04A20;
+  --color-brand-stone:     #57534E;
+}
+
+body {
+  @apply bg-brand-cream text-stone-900 antialiased overflow-x-hidden;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: #C4922A30;
+  color: #C4922A;
+}
+
+/* Numeric/data displays */
+.num {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1, "ss01" 1;
+  letter-spacing: -0.02em;
+}
+
+/* Grain overlay */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.product-gradient {
+  background: var(--product-gradient, linear-gradient(135deg, #C4922A 0%, #8B6218 100%));
+}
+
+.text-stroke {
+  -webkit-text-stroke: 1px currentColor;
+  color: transparent;
+}
+
+.font-serif  { font-family: var(--font-serif); }
+.font-mono   { font-family: var(--font-mono); }
+
+/* Section divider line */
+.divider {
+  @apply w-full h-px bg-stone-200;
+}
+
+/* Professional label */
+.label {
+  @apply text-[9px] font-mono uppercase tracking-[0.35em] text-stone-400 font-medium;
+}
