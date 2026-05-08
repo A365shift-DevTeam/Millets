@@ -54,11 +54,13 @@ export default function ProductPackScroll({ product }: Props) {
         let drawWidth, drawHeight, offsetX, offsetY;
 
         if (canvasAspect > imgAspect) {
+          // Desktop / Wide Aspect Ratio: Use cover logic
           drawWidth = canvas.width;
           drawHeight = drawWidth / imgAspect;
           offsetX = 0;
           offsetY = (canvas.height - drawHeight) / 2;
         } else {
+          // Mobile / Tall Aspect Ratio: Strict cover logic to fill the screen completely
           drawHeight = canvas.height;
           drawWidth = drawHeight * imgAspect;
           offsetX = (canvas.width - drawWidth) / 2;
@@ -75,7 +77,8 @@ export default function ProductPackScroll({ product }: Props) {
         const dpr = window.devicePixelRatio || 1;
         canvas.width = canvas.clientWidth * dpr;
         canvas.height = canvas.clientHeight * dpr;
-        context.scale(dpr, dpr);
+        // DO NOT use context.scale(dpr, dpr) here because our draw calculations
+        // are already based on the physical canvas.width and canvas.height!
       }
     };
 

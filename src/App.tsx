@@ -41,8 +41,8 @@ function HomeContent() {
           </section>
 
           {/* ─── Details / Origin Section ─── */}
-          <section className="bg-brand-parchment py-36 px-6 border-y border-stone-200/50">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-24 items-center">
+          <section className="bg-brand-parchment py-20 md:py-36 px-6 border-y border-stone-200/50">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
 
               <motion.div
                 initial={{ opacity: 0, y: 28 }}
@@ -56,7 +56,7 @@ function HomeContent() {
                     Origin Stories
                   </span>
                 </div>
-                <h2 className="text-5xl md:text-6xl font-serif text-stone-900 mb-8 leading-[1.1] tracking-tight">
+                <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6 md:mb-8 leading-[1.1] tracking-tight">
                   {currentProduct.detailsSection.title}
                 </h2>
                 <p className="text-[16px] text-stone-500 leading-relaxed mb-14 font-light">
@@ -105,9 +105,9 @@ function HomeContent() {
           </section>
 
           {/* ─── Freshness Section ─── */}
-          <section className="py-36 px-6 bg-brand-cream">
+          <section className="py-20 md:py-36 px-6 bg-brand-cream">
             <div className="max-w-5xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-16 items-start">
+              <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16 items-start">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -147,15 +147,15 @@ function HomeContent() {
               style={{ background: currentProduct.gradient }}
             />
 
-            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14 py-32">
-              <div className="flex flex-col lg:flex-row gap-20 items-start">
+            <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14 py-20 md:py-32">
+              <div className="flex flex-col lg:flex-row gap-12 md:gap-20 items-start">
 
                 {/* Left copy */}
                 <div className="flex-1">
                   <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-brand-gold/60 block mb-10">
                     Ready to Begin
                   </span>
-                  <h3 className="text-5xl md:text-7xl font-serif text-white mb-10 leading-tight">
+                  <h3 className="text-4xl md:text-7xl font-serif text-white mb-8 md:mb-10 leading-tight">
                     Your daily<br />millet<br />
                     <span className="italic font-light text-brand-gold">ritual.</span>
                   </h3>
@@ -245,14 +245,14 @@ function HomeContent() {
 
           {/* ─── Next Product ─── */}
           <section
-            className="relative h-[70vh] overflow-hidden cursor-pointer group bg-brand-parchment"
+            className="relative h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group bg-brand-parchment"
             onClick={nextProduct}
           >
             <div className="absolute inset-0 flex flex-col items-center justify-center text-stone-900 p-6">
-              <span className="font-mono text-[9px] uppercase tracking-[0.6em] text-stone-400 mb-10">
+              <span className="font-mono text-[9px] uppercase tracking-[0.6em] text-stone-400 mb-6 md:mb-10 text-center">
                 Continue the Journey
               </span>
-              <h2 className="text-5xl md:text-8xl font-serif italic text-center mb-10 tracking-tight group-hover:text-brand-forest transition-colors duration-500">
+              <h2 className="text-4xl md:text-8xl font-serif italic text-center mb-6 md:mb-10 tracking-tight group-hover:text-brand-forest transition-colors duration-500">
                 {products[(currentIndex + 1) % products.length].name}
               </h2>
               <div className="w-16 h-16 rounded-full border-2 border-stone-200 group-hover:border-brand-gold flex items-center justify-center transition-all duration-500 group-hover:scale-110">
