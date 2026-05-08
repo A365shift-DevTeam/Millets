@@ -13,7 +13,7 @@ export interface CartItem {
   image?: string;
 }
 
-type Page = 'home' | 'checkout' | 'success';
+type Page = 'home' | 'checkout' | 'success' | 'admin';
 
 interface CartContextType {
   items: CartItem[];
@@ -30,7 +30,8 @@ interface CartContextType {
   openBuyModal: () => void;
   closeBuyModal: () => void;
   page: Page;
-  navigateTo: (p: Page) => void;
+  navigateTo: (p: Page, orderNumber?: string) => void;
+  lastOrderNumber: string;
 }
 
 const CartContext = createContext<CartContextType | null>(null);
@@ -39,7 +40,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
-  const [page, setPage] = useState<Page>('home');
+  const [page, setPage] = useState<Page>(
+    window.location.pathname === '/admin' ? 'admin' : 'home'
+  );
+  const [lastOrderNumber, setLastOrderNumber] = useState('');
 
   const addToCart = (product: Product, silent = false) => {
     const priceNum = parseInt(product.buyNowSection.price.replace(/[^0-9]/g, '')) || 0;
@@ -74,7 +78,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const clearCart = () => setItems([]);
 
-  const navigateTo = (p: Page) => {
+  const navigateTo = (p: Page, orderNumber?: string) => {
+    if (orderNumber) setLastOrderNumber(orderNumber);
     setPage(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -92,7 +97,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       isBuyModalOpen,
       openBuyModal: () => setIsBuyModalOpen(true),
       closeBuyModal: () => setIsBuyModalOpen(false),
-      page, navigateTo,
+      page, navigateTo, lastOrderNumber,
     }}>
       {children}
     </CartContext.Provider>

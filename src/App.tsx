@@ -10,6 +10,7 @@ import CartDrawer from './components/CartDrawer';
 import BuyModal from './components/BuyModal';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
+import AdminPage from './pages/AdminPage';
 import { CartProvider, useCart } from './context/CartContext';
 
 function HomeContent() {
@@ -296,6 +297,10 @@ function HomeContent() {
 
 function AppContent() {
   const { page } = useCart();
+
+  // Admin page bypasses cart/drawer entirely
+  if (page === 'admin') return <AdminPage />;
+
   return (
     <>
       <AnimatePresence mode="wait">

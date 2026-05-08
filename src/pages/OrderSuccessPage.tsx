@@ -3,10 +3,8 @@ import { motion } from 'motion/react';
 import { Package, Truck, CheckCircle, ArrowRight, Leaf } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-const ORDER_ID = `MF-${Math.floor(100000 + Math.random() * 900000)}`;
-
 export default function OrderSuccessPage() {
-  const { navigateTo } = useCart();
+  const { navigateTo, lastOrderNumber } = useCart();
   const [step, setStep] = useState(0);
 
   useEffect(() => {
@@ -76,10 +74,10 @@ export default function OrderSuccessPage() {
             Order Confirmed
           </span>
           <h1 className="font-serif italic text-5xl md:text-6xl text-stone-900 leading-tight mb-4">
-            Your pack<br />is on its way.
+            Order placed<br />successfully.
           </h1>
           <p className="text-stone-400 font-light text-[15px] max-w-sm mx-auto leading-relaxed">
-            Thank you for choosing MilletFam. We're packing your order with care.
+            Thank you for choosing MilletFam. Our team will contact you shortly to confirm your order.
           </p>
         </motion.div>
 
@@ -91,7 +89,7 @@ export default function OrderSuccessPage() {
           className="mb-10 mt-8 px-8 py-5 bg-white border border-stone-200/60 rounded-2xl shadow-sm text-center"
         >
           <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-stone-400 mb-2">Order ID</p>
-          <p className="num text-[24px] font-medium text-brand-forest">{ORDER_ID}</p>
+          <p className="num text-[24px] font-medium text-brand-forest">{lastOrderNumber}</p>
           <p className="font-mono text-[9px] text-stone-300 tracking-wider mt-2">Confirmation sent to your email</p>
         </motion.div>
 
