@@ -3,6 +3,7 @@ export interface Product {
   name: string;
   subName: string;
   price: string;
+  image?: string;
   description: string;
   folderPath: string;
   frameCount?: number;
@@ -33,6 +34,7 @@ export const products: Product[] = [
     name: "Millet Mixture",
     subName: "Crunch with a conscience.",
     price: "₹80",
+    image: "/Crunch Mix.png",
     description: "Puffed Millet - Roasted Lentils - No Maida - Zero Trans Fat",
     folderPath: "/2nd-Product",
     frameCount: 240,
@@ -78,6 +80,7 @@ export const products: Product[] = [
     name: "Millet Chikki",
     subName: "Jaggery-kissed energy.",
     price: "₹60",
+    image: "/Energy Bar.png",
     description: "Jaggery Bound - Millet Seeds - Sesame - No Refined Sugar",
     folderPath: "/1st-product",
     frameCount: 240,
@@ -123,6 +126,7 @@ export const products: Product[] = [
     name: "Millet Laddus",
     subName: "Festive. Nourishing. Timeless.",
     price: "₹200",
+    image: "/Laddu.png",
     description: "Ghee Roasted - Ragi & Jowar - Jaggery Sweetened - No Preservatives",
     folderPath: "/images/laddus",
     themeColor: "#D97706",
@@ -165,6 +169,7 @@ export const products: Product[] = [
     name: "Millet Cookies",
     subName: "Baked good. Actually good.",
     price: "₹120",
+    image: "/Cookies.png",
     description: "Whole Grain Millet - Oats - No Maida - Low Sugar - Slow Baked",
     folderPath: "/images/millet-cookies",
     themeColor: "#78716C",
@@ -207,6 +212,7 @@ export const products: Product[] = [
     name: "Ragi Chips",
     subName: "Paper thin. Power packed.",
     price: "₹70",
+    image: "/Ragi Crisps.png",
     description: "100% Ragi - Baked Not Fried - High Calcium - No Artificial Flavors",
     folderPath: "/images/ragi-chips",
     themeColor: "#6B3A2A",

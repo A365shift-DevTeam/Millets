@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingBag, Leaf } from 'lucide-react';
+import { ShoppingBag, Leaf, Sparkles } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { itemCount, openDrawer, navigateTo } = useCart();
+  const { itemCount, openDrawer, navigateTo, openBuyModal } = useCart();
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 60);
@@ -63,13 +63,28 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* BUY button */}
+          <motion.button
+            onClick={openBuyModal}
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.03 }}
+            className={`relative flex items-center gap-2 px-7 py-3 rounded-full text-[11px] font-mono uppercase tracking-[0.35em] font-bold transition-all duration-300 shadow-lg ${
+              isScrolled
+                ? 'bg-brand-gold text-brand-forest shadow-brand-gold/30 hover:bg-brand-amber'
+                : 'bg-brand-gold text-brand-forest shadow-brand-gold/25 hover:bg-brand-amber'
+            }`}
+          >
+            <Sparkles className="w-3 h-3" />
+            Buy
+          </motion.button>
+
           {/* Cart */}
           <motion.button
             onClick={openDrawer}
             whileTap={{ scale: 0.96 }}
-            className={`relative flex items-center gap-2.5 px-6 py-3 rounded-full text-[10px] font-mono uppercase tracking-[0.25em] font-medium transition-all duration-300 ${
+            className={`relative flex items-center gap-2.5 px-5 py-3 rounded-full text-[10px] font-mono uppercase tracking-[0.25em] font-medium transition-all duration-300 ${
               isScrolled
-                ? 'bg-brand-gold text-brand-forest hover:bg-brand-amber shadow-lg shadow-brand-gold/20'
+                ? 'bg-white/10 border border-white/20 text-white hover:bg-white/20'
                 : 'bg-brand-forest text-white hover:bg-brand-moss shadow-xl shadow-brand-forest/25'
             }`}
           >
@@ -91,26 +106,37 @@ export default function Navbar() {
         </div>
 
         {/* Mobile */}
-        <button
-          onClick={openDrawer}
-          className={`flex md:hidden items-center gap-2 p-2.5 rounded-xl relative transition-colors ${
-            isScrolled ? 'text-white' : 'text-brand-forest'
-          }`}
-        >
-          <ShoppingBag className="w-5 h-5" />
-          <AnimatePresence>
-            {itemCount > 0 && (
-              <motion.span
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0 }}
-                className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand-terracotta text-white text-[9px] font-mono font-bold flex items-center justify-center"
-              >
-                {itemCount}
-              </motion.span>
-            )}
-          </AnimatePresence>
-        </button>
+        <div className="flex md:hidden items-center gap-2">
+          <motion.button
+            onClick={openBuyModal}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-gold text-brand-forest font-mono text-[9px] uppercase tracking-[0.3em] font-bold shadow-md shadow-brand-gold/25"
+          >
+            <Sparkles className="w-3 h-3" />
+            Buy
+          </motion.button>
+
+          <button
+            onClick={openDrawer}
+            className={`relative p-2.5 rounded-xl transition-colors ${
+              isScrolled ? 'text-white' : 'text-brand-forest'
+            }`}
+          >
+            <ShoppingBag className="w-5 h-5" />
+            <AnimatePresence>
+              {itemCount > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  exit={{ scale: 0 }}
+                  className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-brand-terracotta text-white text-[9px] font-mono font-bold flex items-center justify-center"
+                >
+                  {itemCount}
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </button>
+        </div>
       </div>
     </nav>
   );

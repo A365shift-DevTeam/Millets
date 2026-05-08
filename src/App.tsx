@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Truck, RotateCcw, ShoppingBag, ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Truck, RotateCcw } from 'lucide-react';
 import { products } from './data/products';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProductPackScroll from './components/ProductPackScroll';
 import ProductTextOverlays from './components/ProductTextOverlays';
 import CartDrawer from './components/CartDrawer';
+import BuyModal from './components/BuyModal';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
 import { CartProvider, useCart } from './context/CartContext';
@@ -14,7 +15,7 @@ import { CartProvider, useCart } from './context/CartContext';
 function HomeContent() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentProduct = products[currentIndex];
-  const { addToCart, page } = useCart();
+  const { page } = useCart();
 
   useEffect(() => { window.scrollTo(0, 0); }, [currentIndex]);
   const nextProduct = () => setCurrentIndex(prev => (prev + 1) % products.length);
@@ -211,7 +212,7 @@ function HomeContent() {
                     </div>
 
                     {/* Features */}
-                    <div className="px-10 py-6 border-b border-stone-200/60">
+                    <div className="px-10 py-8">
                       <div className="space-y-3">
                         {currentProduct.features.map((f, i) => (
                           <div key={i} className="flex items-center gap-3">
@@ -220,22 +221,6 @@ function HomeContent() {
                           </div>
                         ))}
                       </div>
-                    </div>
-
-                    {/* CTA */}
-                    <div className="px-10 py-8">
-                      <motion.button
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => addToCart(currentProduct)}
-                        className="w-full bg-brand-forest text-white py-5 rounded-xl font-mono text-[10px] uppercase tracking-[0.3em] flex items-center justify-center gap-3 hover:bg-brand-moss transition-colors group shadow-lg shadow-brand-forest/20 mb-4"
-                      >
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                        Add to Pack
-                        <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                      </motion.button>
-                      <p className="text-center font-mono text-[9px] uppercase tracking-[0.3em] text-stone-400">
-                        256-bit Encrypted Checkout
-                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -248,6 +233,16 @@ function HomeContent() {
             className="relative h-[70vh] overflow-hidden cursor-pointer group bg-brand-parchment"
             onClick={nextProduct}
           >
+            {/* Next product image — faint, centred */}
+            {products[(currentIndex + 1) % products.length].image && (
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <img
+                  src={products[(currentIndex + 1) % products.length].image}
+                  alt=""
+                  className="h-[55%] w-auto object-contain opacity-10 group-hover:opacity-20 transition-opacity duration-700 scale-110 group-hover:scale-100 transition-transform"
+                />
+              </div>
+            )}
             <div className="absolute inset-0 flex flex-col items-center justify-center text-stone-900 p-6">
               <span className="font-mono text-[9px] uppercase tracking-[0.6em] text-stone-400 mb-10">
                 Continue the Journey
@@ -321,6 +316,7 @@ function AppContent() {
         )}
       </AnimatePresence>
       <CartDrawer />
+      <BuyModal />
     </>
   );
 }

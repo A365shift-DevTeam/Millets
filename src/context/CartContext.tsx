@@ -10,13 +10,14 @@ export interface CartItem {
   unit: string;
   quantity: number;
   themeColor: string;
+  image?: string;
 }
 
 type Page = 'home' | 'checkout' | 'success';
 
 interface CartContextType {
   items: CartItem[];
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, silent?: boolean) => void;
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, qty: number) => void;
   clearCart: () => void;
@@ -25,6 +26,9 @@ interface CartContextType {
   isDrawerOpen: boolean;
   openDrawer: () => void;
   closeDrawer: () => void;
+  isBuyModalOpen: boolean;
+  openBuyModal: () => void;
+  closeBuyModal: () => void;
   page: Page;
   navigateTo: (p: Page) => void;
 }
@@ -34,9 +38,10 @@ const CartContext = createContext<CartContextType | null>(null);
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
   const [page, setPage] = useState<Page>('home');
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, silent = false) => {
     const priceNum = parseInt(product.buyNowSection.price.replace(/[^0-9]/g, '')) || 0;
     setItems(prev => {
       const existing = prev.find(i => i.id === product.id);
@@ -52,9 +57,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
         unit: product.buyNowSection.unit,
         quantity: 1,
         themeColor: product.themeColor,
+        image: product.image,
       }];
     });
-    setIsDrawerOpen(true);
+    if (!silent) setIsDrawerOpen(true);
   };
 
   const removeFromCart = (id: string) => {
@@ -83,6 +89,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       isDrawerOpen,
       openDrawer: () => setIsDrawerOpen(true),
       closeDrawer: () => setIsDrawerOpen(false),
+      isBuyModalOpen,
+      openBuyModal: () => setIsBuyModalOpen(true),
+      closeBuyModal: () => setIsBuyModalOpen(false),
       page, navigateTo,
     }}>
       {children}
