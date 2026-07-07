@@ -1,0 +1,11 @@
+---
+pid: 3272
+cwd: "E:\Arul\CLINTS\Millets-Bar-2"
+command: "Set-Location \"E:\\Arul\\CLINTS\\Millets-Bar-2\"; npm run lint"
+started_at: 2026-07-07T11:22:56.368Z
+running_for_ms: 110000   
+---
+
+> react-example@0.0.0 lint
+> tsc --noEmit
+

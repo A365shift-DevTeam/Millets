@@ -7,6 +7,7 @@ export interface Product {
   folderPath: string;
   frameCount?: number;
   framePrefix?: string;
+  framePadLength?: number;
   frameExtension?: string;
   themeColor: string;
   gradient: string;
@@ -35,7 +36,8 @@ export const products: Product[] = [
     description: "Jaggery Bound - Millet Seeds - Sesame - No Refined Sugar",
     folderPath: "/1st-product",
     frameCount: 240,
-    framePrefix: "ezgif-frame-",
+    framePrefix: "",
+    framePadLength: 8,
     frameExtension: "jpg",
     themeColor: "#92400E",
     gradient: "linear-gradient(135deg, #B45309 0%, #78350F 100%)",
