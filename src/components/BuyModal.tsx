@@ -49,9 +49,9 @@ export default function BuyModal() {
                   <Leaf className="w-4 h-4 text-brand-gold" strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h2 className="font-serif text-[22px] text-stone-900 leading-none">Our Collection</h2>
+                  <h2 className="font-serif text-[22px] text-stone-900 leading-none">Millet Chikki</h2>
                   <p className="font-mono text-[8px] uppercase tracking-[0.45em] text-stone-400 mt-1">
-                    {products.length} Products · Add to your pack
+                    Add to your pack
                   </p>
                 </div>
               </div>
@@ -65,7 +65,7 @@ export default function BuyModal() {
 
             {/* Products Grid */}
             <div className="flex-1 overflow-y-auto px-4 md:px-8 py-7">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 gap-4 max-w-sm mx-auto">
                 {products.map((product, i) => {
                   const qty = getQty(product.id);
                   return (

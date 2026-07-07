@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { useLenis } from 'lenis/react';
 import { Product } from '../data/products';
 
 export interface CartItem {
@@ -37,6 +38,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const lenis = useLenis();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
@@ -81,7 +83,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const navigateTo = (p: Page, orderNumber?: string) => {
     if (orderNumber) setLastOrderNumber(orderNumber);
     setPage(p);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: false });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const total = items.reduce((sum, item) => sum + item.priceNum * item.quantity, 0);

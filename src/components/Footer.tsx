@@ -38,7 +38,7 @@ export default function Footer() {
           <div>
             <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-brand-gold/70 mb-6">Products</p>
             <ul className="space-y-3.5">
-              {['Millet Mixture', 'Millet Chikki', 'Millet Laddus', 'Millet Cookies', 'Ragi Chips'].map(p => (
+              {['Millet Chikki'].map(p => (
                 <li key={p}>
                   <a href="#" className="text-[13px] text-white/45 hover:text-white transition-colors duration-300 font-light">{p}</a>
                 </li>

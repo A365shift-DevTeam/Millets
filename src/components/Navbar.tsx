@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingBag, Leaf, Sparkles } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 import { useCart } from '../context/CartContext';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const { itemCount, openDrawer, navigateTo, openBuyModal } = useCart();
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  useLenis(({ scroll }) => {
+    setIsScrolled(scroll > 60);
+  });
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${

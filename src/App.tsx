@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Truck, RotateCcw } from 'lucide-react';
+import { Truck, RotateCcw } from 'lucide-react';
 import { products } from './data/products';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -14,13 +13,8 @@ import AdminPage from './pages/AdminPage';
 import { CartProvider, useCart } from './context/CartContext';
 
 function HomeContent() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const currentProduct = products[currentIndex];
+  const currentProduct = products[0];
   const { page } = useCart();
-
-  useEffect(() => { window.scrollTo(0, 0); }, [currentIndex]);
-  const nextProduct = () => setCurrentIndex(prev => (prev + 1) % products.length);
-  const prevProduct = () => setCurrentIndex(prev => (prev - 1 + products.length) % products.length);
 
   if (page !== 'home') return null;
 
@@ -229,68 +223,10 @@ function HomeContent() {
             </div>
           </section>
 
-          {/* ─── Next Product ─── */}
-          <section
-            className="relative h-[50vh] md:h-[70vh] overflow-hidden cursor-pointer group bg-brand-parchment"
-            onClick={nextProduct}
-          >
-            {/* Next product image — faint, centred */}
-            {products[(currentIndex + 1) % products.length].image && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <img
-                  src={products[(currentIndex + 1) % products.length].image}
-                  alt=""
-                  className="h-[55%] w-auto object-contain opacity-10 group-hover:opacity-20 transition-opacity duration-700 scale-110 group-hover:scale-100 transition-transform"
-                />
-              </div>
-            )}
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-stone-900 p-6">
-              <span className="font-mono text-[9px] uppercase tracking-[0.6em] text-stone-400 mb-6 md:mb-10 text-center">
-                Continue the Journey
-              </span>
-              <h2 className="text-4xl md:text-8xl font-serif italic text-center mb-6 md:mb-10 tracking-tight group-hover:text-brand-forest transition-colors duration-500">
-                {products[(currentIndex + 1) % products.length].name}
-              </h2>
-              <div className="w-16 h-16 rounded-full border-2 border-stone-200 group-hover:border-brand-gold flex items-center justify-center transition-all duration-500 group-hover:scale-110">
-                <ChevronRight className="w-5 h-5 text-stone-400 group-hover:text-brand-gold transition-colors" />
-              </div>
-            </div>
-          </section>
-
         </motion.main>
       </AnimatePresence>
 
       <Footer />
-
-      {/* Product Switcher */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-1.5 p-1.5 bg-white/85 backdrop-blur-2xl border border-stone-200/70 rounded-full shadow-xl shadow-black/10 max-w-[92vw] flex-wrap justify-center">
-        {products.map((p, i) => (
-          <button
-            key={p.id}
-            onClick={() => setCurrentIndex(i)}
-            className={`px-5 py-3 font-mono text-[9px] uppercase tracking-[0.25em] transition-all duration-300 rounded-full ${
-              currentIndex === i
-                ? 'bg-brand-forest text-white shadow-md px-8'
-                : 'text-stone-400 hover:text-stone-700 hover:bg-stone-100'
-            }`}
-          >
-            {p.name.split(' ')[1] || p.name}
-          </button>
-        ))}
-      </div>
-
-      <button
-        onClick={prevProduct}
-        className="fixed left-5 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-brand-forest transition-all shadow-lg hidden md:flex"
-      >
-        <ChevronLeft className="w-5 h-5" />
-      </button>
-      <button
-        onClick={nextProduct}
-        className="fixed right-5 top-1/2 -translate-y-1/2 z-50 w-11 h-11 rounded-full bg-white/15 backdrop-blur-xl border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-brand-forest transition-all shadow-lg hidden md:flex"
-      >
-        <ChevronRight className="w-5 h-5" />
-      </button>
     </div>
   );
 }
