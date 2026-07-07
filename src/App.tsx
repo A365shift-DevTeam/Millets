@@ -3,12 +3,13 @@ import { products } from './data/products';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProductPackScroll from './components/ProductPackScroll';
+import StorySection from './components/StorySection';
 
 const product = products[0];
 
 export default function App() {
   return (
-    <div className="bg-brand-cream min-h-screen text-stone-900">
+    <div className="min-h-screen overflow-x-clip bg-brand-surface text-brand-ink antialiased">
       <Navbar />
 
       <motion.main
@@ -16,94 +17,35 @@ export default function App() {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.7 }}
       >
-        {/* Hero */}
-        <section id="hero" className="relative">
-          <ProductPackScroll product={product} />
+        <section id="hero" className="relative w-full">
+          <ProductPackScroll
+            product={product}
+            mobileContent={<StorySection product={product} compact />}
+          />
         </section>
 
-        {/* Story */}
         <section
-          id="story"
-          className="bg-brand-parchment py-20 md:py-36 px-6 border-y border-stone-200/50"
+          id="story-desktop"
+          className="hidden lg:block bg-brand-parchment py-14 sm:py-16 md:py-20 lg:py-24 border-y border-brand-border"
         >
-          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
-            <motion.div
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.9, ease: 'easeOut' }}
-            >
-              <div className="flex items-center gap-3 mb-8">
-                <div className="h-px w-10 bg-brand-gold" />
-                <span className="font-mono text-[9px] uppercase tracking-[0.45em] text-brand-gold">
-                  Origin Stories
-                </span>
-              </div>
-              <h2 className="text-4xl md:text-6xl font-serif text-stone-900 mb-6 md:mb-8 leading-[1.1] tracking-tight">
-                {product.detailsSection.title}
-              </h2>
-              <p className="text-[16px] text-stone-500 leading-relaxed mb-14 font-light">
-                {product.detailsSection.description}
-              </p>
-
-              <div className="grid grid-cols-3 gap-0 border border-stone-200 rounded-2xl overflow-hidden">
-                {product.stats.map((stat, i) => (
-                  <div
-                    key={i}
-                    className={`flex flex-col items-center py-7 px-4 text-center ${
-                      i < product.stats.length - 1 ? 'border-r border-stone-200' : ''
-                    }`}
-                  >
-                    <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-stone-400 mb-3">
-                      {stat.label}
-                    </span>
-                    <span className="num text-[32px] font-medium text-brand-forest leading-none">
-                      {stat.val}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.1, ease: 'easeOut' }}
-              className="relative rounded-[3rem] overflow-hidden aspect-[4/5] bg-brand-parchment shadow-2xl shadow-brand-forest/15"
-            >
-              {product.image && (
-                <img
-                  src={product.image}
-                  alt={product.detailsSection.imageAlt}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              )}
-              <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-brand-forest/80 via-brand-forest/30 to-transparent px-8 py-8">
-                <p className="font-mono text-[9px] uppercase tracking-[0.5em] text-brand-gold/90 text-center">
-                  {product.name}
-                </p>
-              </div>
-            </motion.div>
+          <div className="section-wrap">
+            <StorySection product={product} />
           </div>
         </section>
 
-        {/* Freshness */}
-        <section id="freshness" className="py-20 md:py-36 px-6 bg-brand-cream">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10 md:gap-16 items-start">
+        <section id="freshness" className="py-14 sm:py-16 md:py-20 lg:py-24 bg-brand-surface">
+          <div className="section-wrap max-w-5xl">
+            <div className="grid-adaptive-2 items-start">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
               >
-                <div className="w-10 h-10 rounded-xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center mb-6">
-                  <div className="w-2 h-2 rounded-full bg-brand-gold" />
+                <div className="w-10 h-10 rounded-xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center mb-6">
+                  <div className="w-2 h-2 rounded-full bg-brand-accent" />
                 </div>
-                <span className="font-mono text-[9px] uppercase tracking-[0.45em] text-brand-gold block mb-3">
-                  Freshness Promise
-                </span>
-                <div className="h-px w-12 bg-brand-gold/30" />
+                <span className="label text-brand-accent block mb-3">Freshness Promise</span>
+                <div className="h-px w-12 bg-brand-accent/30" />
               </motion.div>
 
               <motion.div
@@ -112,10 +54,10 @@ export default function App() {
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
               >
-                <h2 className="text-4xl md:text-5xl font-serif text-stone-900 mb-6 tracking-tight">
+                <h2 className="text-[34px] sm:text-[46px] md:text-[58px] font-serif text-brand-ink mb-5 sm:mb-6 tracking-tight leading-[1.08]">
                   {product.freshnessSection.title}
                 </h2>
-                <p className="text-[16px] text-stone-500 leading-relaxed font-light">
+                <p className="text-[14px] sm:text-[15px] text-brand-ink/60 leading-relaxed font-light">
                   {product.freshnessSection.description}
                 </p>
               </motion.div>
@@ -123,34 +65,33 @@ export default function App() {
           </div>
         </section>
 
-        {/* Craft */}
-        <section id="craft" className="relative overflow-hidden grain">
+        <section id="craft" className="relative overflow-hidden grain py-14 sm:py-16 md:py-20 lg:py-24">
           <div className="absolute inset-0 bg-brand-forest" />
           <div
             className="absolute inset-0 opacity-10"
             style={{ background: product.gradient }}
           />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-14 py-20 md:py-32">
-            <div className="flex flex-col lg:flex-row gap-12 md:gap-20 items-start">
-              <div className="flex-1">
-                <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-brand-gold/60 block mb-10">
+          <div className="relative z-10 section-wrap">
+            <div className="grid-adaptive-2 items-start">
+              <div>
+                <span className="label text-brand-gold/70 block mb-6 sm:mb-10">
                   {product.craftSection.label}
                 </span>
-                <h3 className="text-4xl md:text-7xl font-serif text-white mb-8 md:mb-10 leading-tight">
+                <h3 className="text-[34px] sm:text-[46px] md:text-[58px] font-serif text-white mb-6 sm:mb-10 leading-[1.08] tracking-tight">
                   {product.craftSection.title}
                 </h3>
-                <p className="text-[16px] text-white/40 leading-relaxed font-light mb-14 max-w-xl">
+                <p className="text-[14px] sm:text-[15px] text-white/50 leading-relaxed font-light mb-8 sm:mb-14 max-w-xl">
                   {product.craftSection.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2.5">
-                  {product.craftSection.processingParams.map((param, i) => (
+                <div className="grid-adaptive-3">
+                  {product.craftSection.processingParams.map((param) => (
                     <span
-                      key={i}
-                      className="px-4 py-2 rounded-lg bg-white/5 border border-white/10 font-mono text-[9px] uppercase tracking-[0.25em] text-white/50 flex items-center gap-2"
+                      key={param}
+                      className="px-4 py-2.5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white/50 flex items-center gap-2 min-h-12"
                     >
-                      <div className="w-1 h-1 rounded-full bg-brand-gold" />
+                      <div className="w-1 h-1 rounded-full bg-brand-gold shrink-0" />
                       {param}
                     </span>
                   ))}
@@ -161,17 +102,14 @@ export default function App() {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="w-full lg:w-[400px] shrink-0"
               >
-                <div className="bg-brand-parchment rounded-3xl overflow-hidden shadow-2xl shadow-black/40 px-10 py-10">
-                  <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-stone-400 mb-6">
-                    What Makes It Special
-                  </p>
-                  <div className="space-y-3">
-                    {product.features.map((f, i) => (
-                      <div key={i} className="flex items-center gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-brand-gold shrink-0" />
-                        <span className="font-mono text-[10px] text-stone-600 tracking-wider">{f}</span>
+                <div className="bg-brand-parchment rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-black/30 p-5 sm:p-9 md:p-11 border border-brand-border">
+                  <p className="label mb-5 sm:mb-6">What Makes It Special</p>
+                  <div className="grid-adaptive-sidebar">
+                    {product.features.map((f) => (
+                      <div key={f} className="flex items-center gap-3 min-h-11">
+                        <div className="w-1.5 h-1.5 rounded-full bg-brand-accent shrink-0" />
+                        <span className="font-mono text-[10px] sm:text-xs text-brand-ink/70 tracking-wider">{f}</span>
                       </div>
                     ))}
                   </div>

@@ -1,4 +1,5 @@
 import { Instagram, Twitter, Facebook, ArrowRight, Leaf } from 'lucide-react';
+import { useLenis } from 'lenis/react';
 
 const SECTION_LINKS = [
   { label: 'Energy Bar', id: 'hero' },
@@ -8,30 +9,40 @@ const SECTION_LINKS = [
 ];
 
 export default function Footer() {
+  const lenis = useLenis();
+
   const scrollToSection = (id: string) => {
-    const target = document.getElementById(id);
-    target?.scrollIntoView({ behavior: 'smooth' });
+    const target =
+      document.getElementById(id) ||
+      (id === 'story' ? document.getElementById('story-desktop') : null);
+    if (!target) return;
+
+    if (lenis) {
+      lenis.scrollTo(target, { offset: -80 });
+    } else {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
     <footer id="contact" className="bg-brand-forest text-white relative overflow-hidden">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-accent/40 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-8 md:px-14 pt-20 pb-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-14 mb-20">
-          <div className="col-span-1 md:col-span-2">
+      <div className="section-wrap py-14 sm:py-16 md:py-20">
+        <div className="grid-adaptive-4 mb-14 sm:mb-20">
+          <div className="sm:col-span-2 lg:col-span-2">
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-9 h-9 rounded-lg bg-brand-gold flex items-center justify-center">
+              <div className="w-9 h-9 rounded-lg bg-brand-accent flex items-center justify-center">
                 <Leaf className="w-4 h-4 text-brand-forest" strokeWidth={1.5} />
               </div>
               <div>
-                <h2 className="text-[15px] font-sans font-700 tracking-[0.15em] uppercase text-white">
+                <h2 className="text-[14px] sm:text-[15px] font-display font-700 tracking-[0.12em] uppercase text-white">
                   Energy<span className="font-400 opacity-50">Bar</span>
                 </h2>
-                <p className="font-mono text-[8px] tracking-[0.4em] uppercase text-brand-gold/60">Est. 2018</p>
+                <p className="font-mono text-[10px] tracking-[0.35em] uppercase text-brand-accent/70">Est. 2018</p>
               </div>
             </div>
-            <p className="text-[15px] text-white/50 max-w-sm leading-relaxed font-light mb-8">
+            <p className="text-[14px] sm:text-[15px] text-white/50 max-w-sm leading-relaxed font-light mb-8">
               On a mission to bring ancient Indian grain wisdom to your modern plate. Smarter snacking, cleaner life.
             </p>
             <div className="flex gap-3">
@@ -39,7 +50,7 @@ export default function Footer() {
                 <a
                   key={i}
                   href="#"
-                  className="w-9 h-9 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-brand-gold/40 hover:bg-brand-gold/10 transition-all duration-300"
+                  className="w-11 h-11 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:border-brand-accent/40 hover:bg-brand-accent/10 transition-all duration-300 active:scale-95"
                 >
                   <Icon className="w-4 h-4" />
                 </a>
@@ -48,13 +59,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-brand-gold/70 mb-6">Explore</p>
-            <ul className="space-y-3.5">
+            <p className="label text-brand-accent/70 mb-5 sm:mb-6">Explore</p>
+            <ul className="space-y-3">
               {SECTION_LINKS.map((link) => (
                 <li key={link.id}>
                   <button
                     onClick={() => scrollToSection(link.id)}
-                    className="text-[13px] text-white/45 hover:text-white transition-colors duration-300 font-light"
+                    className="text-[14px] sm:text-[15px] text-white/45 hover:text-white transition-colors duration-300 font-light min-h-11 flex items-center active:text-brand-accent"
                   >
                     {link.label}
                   </button>
@@ -64,17 +75,17 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[0.4em] text-brand-gold/70 mb-6">Stay in the Loop</p>
-            <p className="text-[13px] text-white/40 mb-6 leading-relaxed font-light">
+            <p className="label text-brand-accent/70 mb-5 sm:mb-6">Stay in the Loop</p>
+            <p className="text-[14px] sm:text-[15px] text-white/40 mb-6 leading-relaxed font-light">
               Drop alerts, grain wisdom, and seasonal recipes.
             </p>
-            <div className="relative border-b border-white/20 focus-within:border-brand-gold/60 transition-colors">
+            <div className="relative border-b border-white/20 focus-within:border-brand-accent/60 transition-colors">
               <input
                 type="email"
                 placeholder="you@example.com"
-                className="w-full bg-transparent py-3 text-[13px] text-white placeholder:text-white/25 focus:outline-none font-mono"
+                className="w-full bg-transparent py-3 sm:py-3.5 text-[14px] text-white placeholder:text-white/25 focus:outline-none font-mono min-h-12"
               />
-              <button className="absolute right-0 top-1/2 -translate-y-1/2 text-brand-gold/60 hover:text-brand-gold transition-colors hover:translate-x-0.5 duration-200">
+              <button className="absolute right-0 top-1/2 -translate-y-1/2 w-11 h-11 flex items-center justify-center text-brand-accent/60 hover:text-brand-accent transition-colors active:scale-95">
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -82,7 +93,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/8 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="font-mono text-[9px] uppercase tracking-[0.35em] text-white/25">
+          <p className="label text-white/25">
             © 2024 Energy Bar. All Rights Reserved.
           </p>
           <div className="flex gap-6">
@@ -90,7 +101,7 @@ export default function Footer() {
               <a
                 key={l}
                 href="#"
-                className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/25 hover:text-white/60 transition-colors"
+                className="label text-white/25 hover:text-white/60 transition-colors min-h-11 flex items-center"
               >
                 {l}
               </a>
