@@ -2,7 +2,6 @@ export interface Product {
   id: string;
   name: string;
   subName: string;
-  price: string;
   image?: string;
   description: string;
   folderPath: string;
@@ -19,22 +18,20 @@ export interface Product {
   section4: { title: string; subtitle: string };
   detailsSection: { title: string; description: string; imageAlt: string };
   freshnessSection: { title: string; description: string };
-  buyNowSection: {
-    price: string;
-    unit: string;
+  craftSection: {
+    label: string;
+    title: string;
+    description: string;
     processingParams: string[];
-    deliveryPromise: string;
-    returnPolicy: string;
   };
 }
 
 export const products: Product[] = [
   {
-    id: "millet-chikki",
-    name: "Millet Chikki",
+    id: "energy-bar",
+    name: "Energy Bar",
     subName: "Jaggery-kissed energy.",
-    price: "₹60",
-    image: "/Energy Bar.png",
+    image: "/energy-bar.jpg",
     description: "Jaggery Bound - Millet Seeds - Sesame - No Refined Sugar",
     folderPath: "/1st-product",
     frameCount: 240,
@@ -48,7 +45,7 @@ export const products: Product[] = [
       { label: "Jaggery", val: "100%" },
       { label: "Millet", val: "Rich" }
     ],
-    section1: { title: "Millet Chikki.", subtitle: "Jaggery-kissed energy." },
+    section1: { title: "Energy Bar.", subtitle: "Jaggery-kissed energy." },
     section2: {
       title: "The bar your grandmother would approve.",
       subtitle: "Real jaggery, toasted millet seeds, and sesame — an energy bar the Indian way."
@@ -60,19 +57,18 @@ export const products: Product[] = [
     section4: { title: "One bite. Hours of energy.", subtitle: "" },
     detailsSection: {
       title: "The Original Energy Bar",
-      description: "Long before protein bars existed, India had chikki. MilletFam's Millet Chikki elevates this tradition with a base of foxtail and pearl millet seeds, bound in pure A-grade jaggery sourced directly from Kolhapur farmers. Each bar is hand-pressed, cut by eye, and cooled slowly to preserve a satisfying, glass-like snap.",
-      imageAlt: "Millet Chikki Details"
+      description: "Long before protein bars existed, India had chikki. Energy Bar elevates this tradition with a base of foxtail and pearl millet seeds, bound in pure A-grade jaggery sourced directly from Kolhapur farmers. Each bar is hand-pressed, cut by eye, and cooled slowly to preserve a satisfying, glass-like snap.",
+      imageAlt: "Energy Bar product"
     },
     freshnessSection: {
       title: "Pressed by Hand, Packed with Care",
       description: "Machine-pressed chikki loses texture. Ours is hand-pressed in small batches, inspected for consistency, and individually wrapped to prevent moisture absorption. The jaggery caramel is cooked to the perfect crack-stage temperature — not a degree more — to preserve its unrefined mineral richness."
     },
-    buyNowSection: {
-      price: "₹60",
-      unit: "per 100g bar pack",
-      processingParams: ["Hand Pressed", "Jaggery Bound", "No Refined Sugar"],
-      deliveryPromise: "Individually wrapped bars shipped in rigid mailers. Arrives unbroken, guaranteed.",
-      returnPolicy: "Broken bar? Compromised taste? Full replacement issued within 24 hours."
+    craftSection: {
+      label: "Handcrafted Heritage",
+      title: "Your daily energy ritual.",
+      description: "Every bar carries the warmth of Kolhapur jaggery, the crunch of toasted millet, and the patience of small-batch craft — a snack rooted in tradition, made for modern life.",
+      processingParams: ["Hand Pressed", "Jaggery Bound", "No Refined Sugar"]
     }
   }
 ];
