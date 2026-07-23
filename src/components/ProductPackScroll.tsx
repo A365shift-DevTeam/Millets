@@ -11,7 +11,8 @@ interface Props {
 const IMG_ASPECT = 16 / 9;
 
 function getFrameSrc(product: Product, frameNumber: number) {
-  const padded = frameNumber.toString().padStart(product.framePadLength ?? 3, '0');
+  const sourceFrameNumber = (product.frameStart ?? 1) + frameNumber - 1;
+  const padded = sourceFrameNumber.toString().padStart(product.framePadLength ?? 3, '0');
   const prefix = product.framePrefix ?? '';
   return `${product.folderPath}/${prefix}${padded}.${product.frameExtension || 'jpg'}`;
 }
@@ -42,6 +43,7 @@ export default function ProductPackScroll({ product, mobileContent }: Props) {
   }, [
     product.folderPath,
     product.frameCount,
+    product.frameStart,
     product.framePrefix,
     product.framePadLength,
     product.frameExtension,

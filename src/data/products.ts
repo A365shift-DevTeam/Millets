@@ -6,6 +6,7 @@ export interface Product {
   description: string;
   folderPath: string;
   frameCount?: number;
+  frameStart?: number;
   framePrefix?: string;
   framePadLength?: number;
   frameExtension?: string;
@@ -35,7 +36,8 @@ export const products: Product[] = [
     image: "/energy-bar.jpg",
     description: "Jaggery Bound - Millet Seeds - Sesame - No Refined Sugar",
     folderPath: "/1st-product",
-    frameCount: 240,
+    frameCount: 210,
+    frameStart: 31,
     framePrefix: "",
     framePadLength: 8,
     frameExtension: "jpg",
