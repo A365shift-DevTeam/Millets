@@ -4,10 +4,13 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ProductPackScroll from './components/ProductPackScroll';
 import StorySection from './components/StorySection';
+import { useIsMobile } from './hooks/useIsMobile';
 
 const product = products[0];
 
 export default function App() {
+  const isMobile = useIsMobile();
+
   return (
     <div className="min-h-screen overflow-x-clip bg-brand-surface text-brand-ink antialiased">
       <Navbar />
@@ -24,14 +27,16 @@ export default function App() {
           />
         </section>
 
-        <section
-          id="story-desktop"
-          className="hidden lg:block bg-brand-parchment py-14 sm:py-16 md:py-20 lg:py-24 border-y border-brand-border"
-        >
-          <div className="section-wrap">
-            <StorySection product={product} />
-          </div>
-        </section>
+        {!isMobile && (
+          <section
+            id="story-desktop"
+            className="hidden lg:block bg-brand-parchment py-14 sm:py-16 md:py-20 lg:py-24 border-y border-brand-border"
+          >
+            <div className="section-wrap">
+              <StorySection product={product} />
+            </div>
+          </section>
+        )}
 
         <section id="freshness" className="py-14 sm:py-16 md:py-20 lg:py-24 bg-brand-surface">
           <div className="section-wrap max-w-5xl">

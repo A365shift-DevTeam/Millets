@@ -32,36 +32,130 @@ export default function ProductPackScroll({ product, mobileContent }: Props) {
 
   const frameIndex = useTransform(scrollYProgress, [0, 1], [0, totalFrames - 1]);
 
-  const images = useMemo(() => {
-    const imgs: HTMLImageElement[] = [];
-    for (let i = 1; i <= totalFrames; i++) {
-      const img = new Image();
-      img.src = getFrameSrc(product, i);
-      imgs.push(img);
+  // Array of HTMLImageElement references
+  const imagesRef = useRef<(HTMLImageElement | null)[]>([]);
+  const loadedCountRef = useRef(0);
+
+  // Initialize image array structure
+  useEffect(() => {
+    imagesRef.current = new Array(totalFrames).fill(null);
+    loadedCountRef.current = 0;
+    setLoadProgress(0);
+
+    let isMounted = true;
+
+    // Helper to load a single frame with async decoding
+    const loadFrame = (index: number): Promise<HTMLImageElement> => {
+      return new Promise((resolve, reject) => {
+        if (imagesRef.current[index]) {
+          resolve(imagesRef.current[index]!);
+          return;
+        }
+        const img = new Image();
+        img.src = getFrameSrc(product, index + 1);
+        
+        const onLoaded = () => {
+          if (!isMounted) return;
+          imagesRef.current[index] = img;
+          loadedCountRef.current += 1;
+          const currentProgress = Math.round((loadedCountRef.current / totalFrames) * 100);
+          setLoadProgress(currentProgress);
+          
+          if (index === currentFrameRef.current) {
+            drawFrame(index);
+          }
+          resolve(img);
+        };
+
+        if (img.complete && img.naturalWidth) {
+          onLoaded();
+        } else {
+          img.onload = () => {
+            // Attempt off-thread decode if supported
+            if ('decode' in img) {
+              img.decode().then(onLoaded).catch(onLoaded);
+            } else {
+              onLoaded();
+            }
+          };
+          img.onerror = () => {
+            if (!isMounted) return;
+            loadedCountRef.current += 1;
+            setLoadProgress(Math.round((loadedCountRef.current / totalFrames) * 100));
+            reject(new Error(`Failed to load frame ${index}`));
+          };
+        }
+      });
+    };
+
+    // Progressive loading pipeline for optimal initial load speed
+    const loadAllProgressively = async () => {
+      // 1. Critical first frames (1-5)
+      const firstBatch = [0, 1, 2, 3, 4].filter(i => i < totalFrames);
+      await Promise.all(firstBatch.map(loadFrame));
+      if (!isMounted) return;
+      drawFrame(currentFrameRef.current);
+
+      // 2. Keyframes across animation (every 5th frame)
+      const keyframes: number[] = [];
+      for (let i = 5; i < totalFrames; i += 5) {
+        keyframes.push(i);
+      }
+      await Promise.all(keyframes.map(loadFrame));
+      if (!isMounted) return;
+
+      // 3. Remaining intermediate frames
+      const remaining: number[] = [];
+      for (let i = 0; i < totalFrames; i++) {
+        if (!imagesRef.current[i]) remaining.push(i);
+      }
+
+      // Batch remaining in chunks of 10 to avoid socket exhaustion
+      const CHUNK_SIZE = 10;
+      for (let i = 0; i < remaining.length; i += CHUNK_SIZE) {
+        if (!isMounted) return;
+        const chunk = remaining.slice(i, i + CHUNK_SIZE);
+        await Promise.all(chunk.map(loadFrame));
+      }
+    };
+
+    loadAllProgressively();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [product, totalFrames]);
+
+  // Find nearest loaded frame if exact target frame is still downloading
+  const getNearestLoadedImage = useCallback((targetIdx: number): HTMLImageElement | null => {
+    const images = imagesRef.current;
+    if (images[targetIdx]?.complete && images[targetIdx]?.naturalWidth) {
+      return images[targetIdx];
     }
-    return imgs;
-  }, [
-    product.folderPath,
-    product.frameCount,
-    product.frameStart,
-    product.framePrefix,
-    product.framePadLength,
-    product.frameExtension,
-    totalFrames,
-  ]);
+    // Search outwards from targetIdx
+    for (let delta = 1; delta < totalFrames; delta++) {
+      const prev = targetIdx - delta;
+      if (prev >= 0 && images[prev]?.complete && images[prev]?.naturalWidth) {
+        return images[prev];
+      }
+      const next = targetIdx + delta;
+      if (next < totalFrames && images[next]?.complete && images[next]?.naturalWidth) {
+        return images[next];
+      }
+    }
+    return null;
+  }, [totalFrames]);
 
   const drawFrame = useCallback((index: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext('2d', { alpha: false });
     if (!context) return;
 
     const clamped = Math.max(0, Math.min(totalFrames - 1, index));
-    const img = images[clamped];
-    if (!img?.complete || !img.naturalWidth) return;
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    const img = getNearestLoadedImage(clamped);
+    if (!img) return;
 
     const canvasAspect = canvas.width / canvas.height;
     const imgAspect = img.width / img.height;
@@ -87,8 +181,10 @@ export default function ProductPackScroll({ product, mobileContent }: Props) {
       offsetY = 0;
     }
 
+    context.fillStyle = '#0B1D16'; // Brand forest background match
+    context.fillRect(0, 0, canvas.width, canvas.height);
     context.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-  }, [images, totalFrames, isMobile]);
+  }, [totalFrames, isMobile, getNearestLoadedImage]);
 
   useMotionValueEvent(frameIndex, 'change', (latest) => {
     const idx = Math.round(latest);
@@ -113,34 +209,11 @@ export default function ProductPackScroll({ product, mobileContent }: Props) {
     window.addEventListener('resize', handleResize, { passive: true });
     handleResize();
 
-    let loaded = 0;
-    const onImageReady = () => {
-      loaded += 1;
-      setLoadProgress(Math.round((loaded / totalFrames) * 100));
-      if (loaded === 1 || loaded === totalFrames) {
-        drawFrame(currentFrameRef.current);
-      }
-    };
-
-    images.forEach((img) => {
-      if (img.complete) onImageReady();
-      else {
-        img.addEventListener('load', onImageReady);
-        img.addEventListener('error', onImageReady);
-      }
-    });
-
-    drawFrame(0);
-
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener('resize', handleResize);
-      images.forEach((img) => {
-        img.removeEventListener('load', onImageReady);
-        img.removeEventListener('error', onImageReady);
-      });
     };
-  }, [images, drawFrame, totalFrames]);
+  }, [drawFrame]);
 
   const isLoading = loadProgress < 100;
 
@@ -169,7 +242,7 @@ export default function ProductPackScroll({ product, mobileContent }: Props) {
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-brand-forest gap-4">
               <div className="w-10 h-10 rounded-full border-2 border-brand-accent/30 border-t-brand-accent animate-spin" />
               <p className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.35em] text-white/70 tabular-nums">
-                Loading — {loadProgress}%
+                Loading - {loadProgress}%
               </p>
             </div>
           )}
