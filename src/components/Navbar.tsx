@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Leaf, Menu, X, ArrowRight } from 'lucide-react';
-import { useLenis } from 'lenis/react';
 
 const NAV_ITEMS = [
   { label: 'Home', id: 'hero' },
@@ -11,7 +10,6 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const lenis = useLenis();
 
   const scrollToSection = (id: string) => {
     const target =
@@ -21,11 +19,8 @@ export default function Navbar() {
 
     setMenuOpen(false);
 
-    if (lenis) {
-      lenis.scrollTo(target, { offset: -80 });
-    } else {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+    const top = target.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: 'smooth' });
   };
 
   return (

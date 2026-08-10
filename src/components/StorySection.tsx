@@ -1,4 +1,3 @@
-import { motion } from 'motion/react';
 import { Product } from '../data/products';
 
 interface Props {
@@ -9,12 +8,7 @@ interface Props {
 export default function StorySection({ product, compact = false }: Props) {
   return (
     <div className={compact ? '' : 'grid-adaptive-2 items-center'}>
-      <motion.div
-        initial={{ opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.9, ease: 'easeOut' }}
-      >
+      <div>
         <div className="flex items-center gap-3 mb-6 sm:mb-8">
           <div className="h-px w-10 bg-brand-gold" />
           <span className="label text-brand-gold">Origin Stories</span>
@@ -39,27 +33,25 @@ export default function StorySection({ product, compact = false }: Props) {
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {!compact && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.1, ease: 'easeOut' }}
-          className="relative rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden aspect-[4/3] md:aspect-[4/5] bg-brand-parchment shadow-xl shadow-brand-forest/10"
-        >
+        <div className="relative rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden aspect-[4/3] md:aspect-[4/5] bg-brand-parchment shadow-xl shadow-brand-forest/10">
           {product.image && (
             <img
               src={product.image}
               alt={product.detailsSection.imageAlt}
+              width="864"
+              height="1152"
+              loading="lazy"
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover"
             />
           )}
           <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-brand-forest/80 via-brand-forest/30 to-transparent px-6 sm:px-8 py-6 sm:py-8">
             <p className="label text-brand-gold/90 text-center">{product.name}</p>
           </div>
-        </motion.div>
+        </div>
       )}
     </div>
   );

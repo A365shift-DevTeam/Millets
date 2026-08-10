@@ -1,5 +1,4 @@
 import { Instagram, Twitter, Facebook, ArrowRight, Leaf } from 'lucide-react';
-import { useLenis } from 'lenis/react';
 
 const SECTION_LINKS = [
   { label: 'Energy Bar', id: 'hero' },
@@ -9,23 +8,18 @@ const SECTION_LINKS = [
 ];
 
 export default function Footer() {
-  const lenis = useLenis();
-
   const scrollToSection = (id: string) => {
     const target =
       document.getElementById(id) ||
       (id === 'story' ? document.getElementById('story-desktop') : null);
     if (!target) return;
 
-    if (lenis) {
-      lenis.scrollTo(target, { offset: -80 });
-    } else {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+    const top = target.getBoundingClientRect().top + window.scrollY - 80;
+    window.scrollTo({ top, behavior: 'smooth' });
   };
 
   return (
-    <footer id="contact" className="bg-brand-forest text-white relative overflow-hidden">
+    <footer id="contact" className="defer-render bg-brand-forest text-white relative overflow-hidden">
       <div className="h-px w-full bg-gradient-to-r from-transparent via-brand-accent/40 to-transparent" />
 
       <div className="section-wrap py-14 sm:py-16 md:py-20">

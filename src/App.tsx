@@ -1,4 +1,3 @@
-import { motion } from 'motion/react';
 import { products } from './data/products';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -15,11 +14,7 @@ export default function App() {
     <div className="min-h-screen overflow-x-clip bg-brand-surface text-brand-ink antialiased">
       <Navbar />
 
-      <motion.main
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.7 }}
-      >
+      <main>
         <section id="hero" className="relative w-full">
           <ProductPackScroll
             product={product}
@@ -30,7 +25,7 @@ export default function App() {
         {!isMobile && (
           <section
             id="story-desktop"
-            className="hidden lg:block bg-brand-parchment py-14 sm:py-16 md:py-20 lg:py-24 border-y border-brand-border"
+            className="defer-render hidden lg:block bg-brand-parchment py-14 sm:py-16 md:py-20 lg:py-24 border-y border-brand-border"
           >
             <div className="section-wrap">
               <StorySection product={product} />
@@ -38,39 +33,30 @@ export default function App() {
           </section>
         )}
 
-        <section id="freshness" className="py-14 sm:py-16 md:py-20 lg:py-24 bg-brand-surface">
+        <section id="freshness" className="defer-render py-14 sm:py-16 md:py-20 lg:py-24 bg-brand-surface">
           <div className="section-wrap max-w-5xl">
             <div className="grid-adaptive-2 items-start">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
+              <div>
                 <div className="w-10 h-10 rounded-xl bg-brand-accent/10 border border-brand-accent/20 flex items-center justify-center mb-6">
                   <div className="w-2 h-2 rounded-full bg-brand-accent" />
                 </div>
                 <span className="label text-brand-accent block mb-3">Freshness Promise</span>
                 <div className="h-px w-12 bg-brand-accent/30" />
-              </motion.div>
+              </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-              >
+              <div>
                 <h2 className="text-[34px] sm:text-[46px] md:text-[58px] font-serif text-brand-ink mb-5 sm:mb-6 tracking-tight leading-[1.08]">
                   {product.freshnessSection.title}
                 </h2>
                 <p className="text-[14px] sm:text-[15px] text-brand-ink/60 leading-relaxed font-light">
                   {product.freshnessSection.description}
                 </p>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section id="craft" className="relative overflow-hidden grain py-14 sm:py-16 md:py-20 lg:py-24">
+        <section id="craft" className="defer-render relative overflow-hidden grain py-14 sm:py-16 md:py-20 lg:py-24">
           <div className="absolute inset-0 bg-brand-forest" />
           <div
             className="absolute inset-0 opacity-10"
@@ -103,11 +89,7 @@ export default function App() {
                 </div>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
+              <div>
                 <div className="bg-brand-parchment rounded-xl sm:rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl shadow-black/30 p-5 sm:p-9 md:p-11 border border-brand-border">
                   <p className="label mb-5 sm:mb-6">What Makes It Special</p>
                   <div className="grid-adaptive-sidebar">
@@ -119,11 +101,11 @@ export default function App() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
-      </motion.main>
+      </main>
 
       <Footer />
     </div>
